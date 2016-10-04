@@ -14,8 +14,8 @@ def load_attempts():
     pages = devman_data['number_of_pages']
     for page_number in range(1, pages+1):
         payload = {'page': page_number}
-        devman_request = requests.get(url, params=payload)
-        devman_data = devman_request.json()
+        devman_response = requests.get(url, params=payload)
+        devman_data = devman_response.json()
         users = len(devman_data['records'])
         for user_number in range(0, users):
             yield {
