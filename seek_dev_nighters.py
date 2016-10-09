@@ -6,8 +6,10 @@ from datetime import datetime, time
 def load_attempts():
     url = "https://devman.org/api/challenges/solution_attempts/"
     first_page = 1
-    last_page = 10
-    for page_number in range(first_page, last_page+1):
+    devman_response = requests.get(url, params={'page': first_page})
+    devman_data = devman_response.json()
+    pages = devman_data['number_of_pages']
+    for page_number in range(first_page + 1, pages + 1):
         payload = {'page': page_number}
         devman_response = requests.get(url, params=payload)
         devman_data = devman_response.json()
@@ -35,10 +37,10 @@ def get_midnighters(users):
                 midnight_users_list.append(user['username'])
     return midnight_users_list
 
+
 if __name__ == '__main__':
     users_list = list(load_attempts())
     midnight_users_list = get_midnighters(users_list)
     print("Совы devman, отправялющие задачи в промежуток 00:00 - 04:00:\n")
     for user in midnight_users_list:
         print(user)
-        
