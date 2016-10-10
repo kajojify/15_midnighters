@@ -28,7 +28,7 @@ def load_attempts():
                 'timestamp': user['timestamp'],
                 'timezone': user['timezone'],
             })
-        return users_list
+    return users_list
 
 def get_midnighters(users):
     midnight_users_list = []
