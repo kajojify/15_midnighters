@@ -6,6 +6,7 @@ from datetime import datetime, time
 def load_attempts():
     url = "https://devman.org/api/challenges/solution_attempts/"
     first_page = 1
+    users_list = []
     devman_response = requests.get(url, params={'page': first_page})
     devman_data = devman_response.json()
     pages = devman_data['number_of_pages']
@@ -17,7 +18,6 @@ def load_attempts():
                 'timezone': user['timezone'],
             })
     for page_number in range(first_page + 1, pages + 1):
-        users_list = []
         payload = {'page': page_number}
         devman_response = requests.get(url, params=payload)
         devman_data = devman_response.json()
