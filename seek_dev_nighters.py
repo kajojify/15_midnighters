@@ -4,30 +4,29 @@ from datetime import datetime, time
 
 
 def load_attempts():
+    def get_user_info(devman_data):
+        page_users_info = []
+        users = devman_data['records']
+        for user in users:
+            page_users_info.append({
+                'username': user['username'],
+                'timestamp': user['timestamp'],
+                'timezone': user['timezone'],
+            })
+        return page_users_info
+
     url = "https://devman.org/api/challenges/solution_attempts/"
     first_page = 1
     users_list = []
     devman_response = requests.get(url, params={'page': first_page})
     devman_data = devman_response.json()
     pages = devman_data['number_of_pages']
-    users = devman_data['records']
-    for user in users:
-            users_list.append({
-                'username': user['username'],
-                'timestamp': user['timestamp'],
-                'timezone': user['timezone'],
-            })
+    users_list.extend(get_user_info(devman_data))
     for page_number in range(first_page + 1, pages + 1):
         payload = {'page': page_number}
         devman_response = requests.get(url, params=payload)
         devman_data = devman_response.json()
-        users = devman_data['records']
-        for user in users:
-            users_list.append({
-                'username': user['username'],
-                'timestamp': user['timestamp'],
-                'timezone': user['timezone'],
-            })
+        users_list.extend(get_user_info(devman_data))
     return users_list
 
 def get_midnighters(users):
